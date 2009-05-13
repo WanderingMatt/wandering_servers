@@ -6,6 +6,12 @@ class TestRequest < Test::Unit::TestCase
     @test_request = HttpServer::Request.new test_io
   end
   
+  def test_read_stops_after_double_crlf
+    test_io = StringIO.new "GET /#{File.basename(__FILE__)} HTTP/1.0\r\nHost: foo\r\nDate: today\r\n\r\nhello!"
+    test_request = HttpServer::Request.new test_io
+    assert_equal 'hello!', test_io.read
+  end
+  
   def test_bogus_headers_are_ignored
     test_io = StringIO.new "GET /#{File.basename(__FILE__)} HTTP/1.0\r\nHost: foo\r\nDate: today\r\n\r\n"
     test_request = HttpServer::Request.new test_io
