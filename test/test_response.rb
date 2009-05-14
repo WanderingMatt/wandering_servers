@@ -5,15 +5,7 @@ class TestResponse < Test::Unit::TestCase
     @response = HttpServer::Response.new
   end
 
-  def test_status_is_nil_on_init
-    assert_nil @response.status
-  end
-
-  def test_body_is_nil_on_init
-    assert_nil @response.body
-  end
-
-  def test_response_code_can_be_set
+  def test_can_set_response_code
     @response.status = 200
     assert_equal 200, @response.status
   end
@@ -38,8 +30,7 @@ class TestResponse < Test::Unit::TestCase
     @response.write_to(string_io)
     
     string_io.rewind
-    assert_equal "HTTP/0.9 200 OK\r\nContent-Type: text/html\r\nContent-Length: #{content.length}\r\n\r\n#{content}",
-      string_io.read
+    assert_equal "HTTP/0.9 200 OK\r\nContent-Type: text/html\r\nContent-Length: #{content.length}\r\n\r\n#{content}", string_io.read
   end
   
   def test_write_with_arbirary_headers
