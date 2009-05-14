@@ -1,9 +1,7 @@
 module HttpServer
   class Request
     attr_accessor :method, :path
-  
-    HTTP_VERSION = '0.9'
-  
+    
     def initialize io
       @io = io
       @method = nil
@@ -19,7 +17,7 @@ module HttpServer
           @method = parsed[0]
           @path = parsed[1]
         end
-      end        
+      end
     end
   end
 end

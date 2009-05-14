@@ -2,8 +2,8 @@ require 'helper'
 
 class TestRequest < Test::Unit::TestCase
   def setup
-    test_io = StringIO.new "GET /#{File.basename(__FILE__)} HTTP/1.0\r\nHost: flunk.com\r\nDate: today\r\n\r\nBody!"
-    @test_request = HttpServer::Request.new test_io
+    @test_io = StringIO.new "GET /#{File.basename(__FILE__)} HTTP/1.0\r\nHost: flunk.com\r\nDate: today\r\n\r\nhello world"
+    @test_request = HttpServer::Request.new @test_io
   end
   
   def test_parses_method_from_request
@@ -15,6 +15,6 @@ class TestRequest < Test::Unit::TestCase
   end
   
   def test_read_stops_after_double_crlf
-    assert_equal 'Body!', test_io.read
+    assert_equal 'hello world', @test_io.read
   end
 end
