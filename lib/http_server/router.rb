@@ -2,11 +2,11 @@ module HttpServer
   class Router
     SERVLETS = {}
     ROOT = Dir.pwd
-    
+
     def self.register path, &block
       SERVLETS[path] = block
     end
-    
+
     def accept io
       request = Request.new io
       response = Response.new
@@ -24,7 +24,7 @@ module HttpServer
         response.write_to io
       end
     end
-    
+
     def serve path, response
       lookup = ROOT + path
       if File.directory? lookup
@@ -36,20 +36,20 @@ module HttpServer
       end
       response
     end
-    
+
     def serve_directory dir, response
       response.status = 200
       response.headers['Content-Type'] = 'text/html'
-      items = Dir.new(dir).entries.reject{ |f| f =~ /^\./ }
-       response.body = "<html><head></head><body><ul style=\"list-style-type:none;margin:0;padding:0;\">"
+      items = Dir.new(dir).entries.reject { |f| f =~ /^\./ }
+       response.body = "<html><body><ul>"
        items.each do |item|
-         response.body << "<li>"
+         response.body += "<li><a href='#{item}'>"
          response.body += File.directory?(item) ? "<strong>#{item}/</strong>" : "#{item}"
-         response.body += "</li>"
+         response.body += "</a></li>"
        end
        response.body += "</ul></body></html>"
      end
-    
+
     def serve_file file, response
       response.status = 200
       response.headers['Content-Type'] = content_type file
@@ -61,14 +61,14 @@ module HttpServer
       end
       response
     end
-    
+
     def serve_404 path, response
       response.status = 404
       response.headers['Content-Type'] = 'text/html'
       response.body = "<html><body><h1>404 File Not Found</h1></body></html>"
       response
     end
-    
+
     def content_type file
       ext = File.extname file
       if ext == '.html' || ext == '.erb'
