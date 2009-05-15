@@ -52,7 +52,7 @@ module HttpServer
     
     def serve_file file, response
       response.status = 200
-      response.headers['Content-Type'] = 'text/html'
+      response.headers['Content-Type'] = content_type file
       response.body = File.read(file)
       response
     end
@@ -60,15 +60,17 @@ module HttpServer
     def serve_404 path, response
       response.status = 404
       response.headers['Content-Type'] = 'text/html'
-      response.body = "<html><body><h1>404: File Not Found</h1></body></html>"
+      response.body = "<html><body><h1>404 File Not Found</h1></body></html>"
       response
     end
+    
+    def content_type file
+      ext = File.extname file
+      if ext == '.html' || ext == '.erb'
+        'text/html'
+      else
+        'text/plain'
+      end
+    end
   end
-end
-
-HttpServer::Router.register '/time' do |request, response|
-  called = true
-  response.status = 200
-  response.headers['Content-Type'] = 'text/html'
-  response.body = "<html><body><h1>#{Time.now}</h1></body></html>"
 end

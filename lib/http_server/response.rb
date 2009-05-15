@@ -3,7 +3,7 @@ module HttpServer
     attr_accessor :status, :headers, :body
     
     HTTP_VERSION = '0.9'
-    STATUS_CODES = {200 => 'OK', 301 => 'Moved Permanetly', 404 => 'Not Found', 500 => 'Internal Server Error'}
+    STATUS_CODES = {200 => 'OK', 301 => 'Moved Permanently', 404 => 'Not Found', 500 => 'Internal Server Error'}
     
     def initialize
       @status = nil
