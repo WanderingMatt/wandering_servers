@@ -53,7 +53,12 @@ module HttpServer
     def serve_file file, response
       response.status = 200
       response.headers['Content-Type'] = content_type file
-      response.body = File.read(file)
+      if File.extname(file) == ".erb"
+        erb = ERB.new(File.read(file)).src
+        response.body = eval(erb, binding)
+      else
+        response.body = File.read(file)
+      end
       response
     end
     
