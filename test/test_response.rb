@@ -21,34 +21,31 @@ class TestResponse < Test::Unit::TestCase
   end
   
   def test_write_to
-    content = 'hello world'
-    string_io = StringIO.new
+    io = StringIO.new
     @response.status = 200
-    @response.body = content
     @response.headers['Content-Type'] = 'text/html'
+    @response.body = 'hello world'
     
-    @response.write_to(string_io)
+    @response.write_to io
+    io.rewind
     
-    string_io.rewind
-    assert_equal "HTTP/0.9 200 OK\r\nContent-Type: text/html\r\nContent-Length: #{content.length}\r\n\r\n#{content}", string_io.read
+    assert_equal "HTTP/0.9 200 OK\r\nContent-Type: text/html\r\nContent-Length: #{@response.body.length}\r\n\r\nhello world", io.read
   end
   
   def test_write_with_arbirary_headers
-    body = '<html><body>hello world</body></html>'
     io = StringIO.new
     @response.status = 200
-    @response.body = body
     @response.headers['Content-Type'] = 'text/html'
-    @response.headers['Date'] = 'today!'
+    @response.headers['Date'] = "#{Time.now}"
+    @response.body = 'hello world'
     
     @response.write_to io
-    
     io.rewind
     
     written = io.read.split("\r\n")
     assert_equal 'HTTP/0.9 200 OK', written.first
-    assert written.include?('Date: today!'), 'should have date header'
-    assert written.include?('Content-Type: text/html'), 'should have content type'
-    assert written.include?("Content-Length: #{body.length}"), 'should have content length'
+    assert written.include?('Content-Type: text/html'), 'Should have a Content-Type header'
+    assert written.include?("Content-Length: #{@response.body.length}"), 'Should have a Content-Length header'
+    assert written.include?("Date: #{Time.now}"), 'Should have Date header'
   end
 end
