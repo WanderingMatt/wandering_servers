@@ -15,7 +15,31 @@ class TestRouter < Test::Unit::TestCase
     assert response.include?('<html><body><h1>404: File Not Found</h1></body></html>')    
   end
   
-  def test_responds_with_file_if_it_exists
+  def test_500
+    called = false
+    HttpServer::Router.register '/explosion' do |request, response|
+      raise
+    end
+    io = StringIO.new("GET /explosion HTTP/1.0\r\n\r\n")
+    @router.accept(io)
+
+    response = io.string.split("\r\n")
+    assert response.include?('HTTP/0.9 500 Internal Server Error'), 'should have 404 status'
+    assert response.include?('Content-Type: text/html'), "should have content type header"
+    assert response.include?('<html><body><h1>500 Internal Server Error</h1></body></html>')
+  end
+  
+  def test_responds_with_directories
+    io = StringIO.new("GET /test/ HTTP/1.0\r\n\r\n")
+    @router.accept(io)
+    
+    response = io.string.split("\r\n")
+    assert response.include?('HTTP/0.9 200 OK'), 'should have 200 status'
+    assert response.include?('Content-Type: text/html'), "should have content type header"
+    assert_match "#{__FILE__}", response.last
+  end
+  
+  def test_responds_with_files
     io = StringIO.new("GET /test/#{File.basename(__FILE__)} HTTP/1.0\r\n\r\n")
     @router.accept(io)
 
