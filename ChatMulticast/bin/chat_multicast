@@ -1,0 +1,5 @@
+#!/usr/bin/env ruby
+
+require '../lib/chat_multicast'
+
+ChatMulticast.run if $0 == __FILE__

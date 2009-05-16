@@ -4,9 +4,8 @@ require 'rubygems'
 require 'hoe'
 require './lib/chat_multicast.rb'
 
-Hoe.new('ChatMulticast', Chatmulticast::VERSION) do |p|
-  # p.rubyforge_name = 'ChatMulticastx' # if different than lowercase project name
-  # p.developer('FIX', 'FIX@example.com')
+Hoe.new('ChatMulticast', ChatMulticast::VERSION) do |p|
+  p.developer('Matthew Anderson', 'manderson@onehub.com')
 end
 
 # vim: syntax=Ruby

@@ -1,7 +1,7 @@
 require 'socket'
 require 'ipaddr'
 
-class MulticastChat
+class ChatMulticast
   VERSION = '1.0.0'
 
   MULTICAST_ADDR = "234.5.6.7"
@@ -24,10 +24,13 @@ class MulticastChat
       begin
         socket = UDPSocket.open
         socket.setsockopt(Socket::IPPROTO_IP, Socket::IP_TTL, [1].pack('i'))
-        socket.send("** #{user} is now listening **", 0, MULTICAST_ADDR, PORT)
+        socket.send("** #{user} joined **", 0, MULTICAST_ADDR, PORT)
         loop do
           message = "#{user}: #{gets.chomp}"
-          break if message =~ /exit|quit|stop/i
+          if message =~ /exit|quit|stop/i
+            socket.send("** #{user} left **", 0, MULTICAST_ADDR, PORT)
+            break
+          end
           socket.send(message, 0, MULTICAST_ADDR, PORT)
         end
       ensure
@@ -37,5 +40,3 @@ class MulticastChat
     send.join
   end
 end
-
-MulticastChat.run

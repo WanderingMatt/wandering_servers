@@ -1,26 +1,26 @@
 = ChatMulticast
 
-* FIX (url)
+* http://github.com/WanderingMatt/wandering_servers/tree/master
 
 == DESCRIPTION:
 
-FIX (describe your package)
+Simple multicast chat that listens to and broadcasts out to all users running the client
 
 == FEATURES/PROBLEMS:
 
-* FIX (list of features or problems)
+* Runs on port 7387
 
 == SYNOPSIS:
 
-  FIX (code sample of usage)
+  ruby chat_multicast.rb
 
 == REQUIREMENTS:
 
-* FIX (list of requirements)
+* None
 
 == INSTALL:
 
-* FIX (sudo gem install, anything else)
+* None
 
 == LICENSE:
 
