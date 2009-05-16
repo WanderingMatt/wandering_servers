@@ -1,0 +1,7 @@
+History.txt
+Manifest.txt
+README.txt
+Rakefile
+bin/chat_multicast
+lib/chat_multicast.rb
+test/test_chat_multicast.rb
