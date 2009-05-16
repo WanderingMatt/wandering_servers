@@ -1,0 +1,12 @@
+# -*- ruby -*-
+
+require 'rubygems'
+require 'hoe'
+require './lib/chat_d_r_b.rb'
+
+Hoe.new('ChatDRB', Chatdrb::VERSION) do |p|
+  # p.rubyforge_name = 'ChatDRBx' # if different than lowercase project name
+  # p.developer('FIX', 'FIX@example.com')
+end
+
+# vim: syntax=Ruby
