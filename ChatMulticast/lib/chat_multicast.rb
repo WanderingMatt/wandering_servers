@@ -26,8 +26,9 @@ class ChatMulticast
         socket.setsockopt(Socket::IPPROTO_IP, Socket::IP_TTL, [1].pack('i'))
         socket.send("** #{user} joined **", 0, MULTICAST_ADDR, PORT)
         loop do
-          message = "#{user}: #{gets.chomp}"
-          if message =~ /exit|quit|stop/i
+          typed = gets.chomp
+          message = "#{user}: #{typed}"
+          if typed =~ /^(exit|quit|stop)$/i
             socket.send("** #{user} left **", 0, MULTICAST_ADDR, PORT)
             break
           end
